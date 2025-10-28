@@ -1,0 +1,19 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "name": "Project Alpha",
+      "description": "This is the first project."
+    },
+    {
+      "id": 2,
+      "name": "Project Beta",
+      "description": "This is the second project."
+    },
+    {
+      "id": 3,
+      "name": "Project Gamma",
+      "description": "This is the third project."
+    }
+  ]
+}
