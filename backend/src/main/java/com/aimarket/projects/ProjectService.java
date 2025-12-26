@@ -29,10 +29,13 @@ public class ProjectService {
 
   public List<ProjectDtos.ProjectResponse> list(String q) {
     List<Project> list =
-        (q == null || q.isBlank()) ? projects.findAll() : projects.search(q.trim(), 50);
+        (q == null || q.isBlank())
+            ? projects.findAll()
+            : projects.search(q.trim(), org.springframework.data.domain.PageRequest.of(0, 50));
     return list.stream().map(this::toProjectResponse).toList();
   }
 
+  @Transactional
   public ProjectDtos.ProjectDetailResponse get(Long projectId) {
     Project p = projects.findById(projectId).orElseThrow();
     List<ProjectDtos.MemberResponse> memberDtos =
@@ -163,7 +166,8 @@ public class ProjectService {
         .toList();
   }
 
-  private ProjectDtos.ProjectResponse toProjectResponse(Project p) {
+  @Transactional
+  protected ProjectDtos.ProjectResponse toProjectResponse(Project p) {
     long total = contributions.totalPoints(p.getId());
     int memberCount = members.findByProjectIdOrderByJoinedAtAsc(p.getId()).size();
     return new ProjectDtos.ProjectResponse(

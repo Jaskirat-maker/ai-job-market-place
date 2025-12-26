@@ -68,30 +68,5 @@ public class ChatController {
         m.getContent(),
         m.getCreatedAt());
   }
-
-  @RestController
-  @RequestMapping("/api/projects/{projectId}/chat")
-  public static class ChatHistoryController {
-    private final ChatMessageRepository messages;
-
-    public ChatHistoryController(ChatMessageRepository messages) {
-      this.messages = messages;
-    }
-
-    @GetMapping
-    public List<ChatDtos.ChatMessageResponse> recent(@PathVariable Long projectId) {
-      return messages.findTop50ByProjectIdOrderByCreatedAtDesc(projectId).stream()
-          .map(
-              m ->
-                  new ChatDtos.ChatMessageResponse(
-                      m.getId(),
-                      m.getProject().getId(),
-                      m.getSender().getId(),
-                      m.getSender().getDisplayName(),
-                      m.getContent(),
-                      m.getCreatedAt()))
-          .toList();
-    }
-  }
 }
 

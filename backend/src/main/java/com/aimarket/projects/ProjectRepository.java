@@ -8,16 +8,13 @@ import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
   @Query(
-      value =
-          """
-          select p.*
-          from projects p
-          where lower(p.title) like lower(concat('%', :q, '%'))
-             or lower(p.description) like lower(concat('%', :q, '%'))
-          order by p.created_at desc
-          limit :limit
-          """,
-      nativeQuery = true)
-  List<Project> search(@Param("q") String q, @Param("limit") int limit);
+      """
+      select p
+      from Project p
+      where lower(p.title) like lower(concat('%', :q, '%'))
+         or lower(p.description) like lower(concat('%', :q, '%'))
+      order by p.createdAt desc
+      """)
+  List<Project> search(@Param("q") String q, org.springframework.data.domain.Pageable pageable);
 }
 

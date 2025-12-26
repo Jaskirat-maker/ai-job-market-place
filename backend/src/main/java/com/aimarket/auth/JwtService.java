@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
+import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtService {
   private final JwtProperties props;
-  private final Key key;
+  private final SecretKey key;
 
   public JwtService(JwtProperties props) {
     this.props = props;
@@ -65,7 +66,8 @@ public class JwtService {
   }
 
   public Claims parseClaims(String jwt) {
-    return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
+    // JJWT 0.12.x parsing API
+    return Jwts.parser().verifyWith(key).build().parseSignedClaims(jwt).getPayload();
   }
 
   public boolean isRefreshToken(Claims claims) {
