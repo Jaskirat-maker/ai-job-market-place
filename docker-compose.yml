@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: aimarket-postgres
+    environment:
+      POSTGRES_DB: aimarket
+      POSTGRES_USER: aimarket
+      POSTGRES_PASSWORD: aimarket
+    ports:
+      - "5432:5432"
+    volumes:
+      - aimarket_pg:/var/lib/postgresql/data
+
+volumes:
+  aimarket_pg:
+
